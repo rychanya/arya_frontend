@@ -1,18 +1,22 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
-  </div>
+  <section class="section">
+    <div class="buttons is-centered">
+      <router-link to="/search" class="button">Поиск ответов</router-link>
+    </div>
+  </section>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+import { defineComponent, ref } from "vue";
 
 export default defineComponent({
   name: "Home",
-  components: {
-    HelloWorld,
+  setup() {
+    let togle = ref(false);
+
+    return { togle };
   },
 });
 </script>
+
+<style></style>
