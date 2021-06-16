@@ -12,7 +12,7 @@
           <tr
             v-for="answer in qa.answers"
             :key="answer"
-            :class="{ 'has-background-success-light': answer == qa.correct }"
+            :class="{ 'has-background-success': answer == qa.correct }"
           >
             <td>{{ answer }}</td>
           </tr>
@@ -25,7 +25,7 @@
             v-for="answer in qa.answers"
             :key="answer"
             :class="{
-              'has-background-success-light': qa.correct.includes(answer),
+              'has-background-success': qa.correct.includes(answer),
             }"
           >
             <td>{{ answer }}</td>
@@ -38,7 +38,7 @@
           <tr
             v-for="(answer, index) in qa.correct"
             :key="answer"
-            class="has-background-success-light"
+            class="has-background-success"
           >
             <th>{{ index + 1 }}</th>
             <td>{{ answer }}</td>
@@ -51,7 +51,7 @@
           <tr
             v-for="(extra, answer) in qa.correct"
             :key="answer"
-            class="has-background-success-light"
+            class="has-background-success"
           >
             <td>{{ answer }}</td>
             <td>{{ extra }}</td>

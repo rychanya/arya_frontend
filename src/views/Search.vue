@@ -54,6 +54,7 @@ export default defineComponent({
     let errorText = ref("");
     const searchMethod = (page: number) => {
       loading.value = true;
+      qas.value = []
       search(q.value, page)
         .then((data) => {
           qas.value = data[0];
