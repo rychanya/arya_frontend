@@ -20,6 +20,7 @@
       <div class="navbar-start">
         <router-link to="/" class="navbar-item">Home</router-link>
         <router-link to="/search" class="navbar-item">Search</router-link>
+        <router-link to="/upload" class="navbar-item">UpLoad</router-link>
       </div>
 
       <div class="navbar-end">
@@ -28,7 +29,7 @@
             <a class="button is-primary">
               <strong>Sign up</strong>
             </a>
-            <a class="button is-light"> Log in </a>
+            <a class="button is-light" @click="loginapi"> Log in </a>
           </div>
         </div>
       </div>
@@ -39,14 +40,21 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      isMenuActive: false,
+<script lang="ts">
+import { login } from "@/api/auth";
+import { defineComponent, ref, Ref } from "vue";
+export default defineComponent({
+  setup() {
+    let isMenuActive: Ref<boolean> = ref(false);
+    const loginapi = function () {
+      const payload = { username: "123", password: "123" };
+      login(payload).then((resp) => {
+        console.log(resp);
+      });
     };
+    return { isMenuActive, loginapi };
   },
-};
+});
 </script>
 
 <style></style>
