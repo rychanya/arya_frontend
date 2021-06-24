@@ -26,4 +26,21 @@ function login(payload: Login): Promise<string> {
   });
 }
 
-export { login };
+function signin(payload: Login): Promise<string> {
+  return new Promise((resolve, reject) => {
+    axios({
+      url: "/auth/signin",
+      data: { username: payload.username, password: payload.password },
+      method: "POST",
+    })
+      .then((resp) => {
+        const token = resp.data.access_token;
+        resolve(token);
+      })
+      .catch((err) => {
+        reject(parseError(err));
+      });
+  });
+}
+
+export { login, signin };

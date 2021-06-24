@@ -38,7 +38,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { search, QA, Paginator } from "@/api/api";
+import { search, QA, Paginator } from "@/api/qa";
 import PaginationComp from "@/components/PaginationComp.vue";
 import qaComp from "@/components/qaComp.vue";
 

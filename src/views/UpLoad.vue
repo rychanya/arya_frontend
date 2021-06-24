@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, Ref, computed } from "vue";
-import { upload } from "@/api/api";
+import { upload } from "@/api/qa";
 
 export default defineComponent({
   setup() {

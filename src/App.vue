@@ -8,7 +8,7 @@
         aria-expanded="false"
         data-target="navbarBasicExample"
         :class="{ 'is-active': isMenuActive }"
-        @click="isMenuActive = !isMenuActive"
+        @click="togleMenu"
       >
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
@@ -26,10 +26,12 @@
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
-            <a class="button is-primary">
-              <strong>Sign up</strong>
-            </a>
-            <a class="button is-light" @click="loginapi"> Log in </a>
+            <router-link to="/login" class="button is-primary"
+              >Sign up
+            </router-link>
+            <router-link to="/login" class="button is-light"
+              >Log in
+            </router-link>
           </div>
         </div>
       </div>
@@ -41,18 +43,16 @@
 </template>
 
 <script lang="ts">
-import { login } from "@/api/auth";
-import { defineComponent, ref, Ref } from "vue";
+import { defineComponent, computed } from "vue";
+import { useStore, TogleMenu } from "@/store/index";
 export default defineComponent({
   setup() {
-    let isMenuActive: Ref<boolean> = ref(false);
-    const loginapi = function () {
-      const payload = { username: "123", password: "123" };
-      login(payload).then((resp) => {
-        console.log(resp);
-      });
+    const store = useStore();
+    const isMenuActive = computed(() => store.state.isMenuActive);
+    const togleMenu = function () {
+      store.commit(TogleMenu);
     };
-    return { isMenuActive, loginapi };
+    return { isMenuActive, togleMenu };
   },
 });
 </script>

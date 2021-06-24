@@ -64,7 +64,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, toRefs, computed } from "vue";
-import { QA } from "@/api/api";
+import { QA } from "@/api/qa";
 export default defineComponent({
   props: {
     qa: {
