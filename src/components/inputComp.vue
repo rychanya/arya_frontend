@@ -12,6 +12,7 @@
         :placeholder="placeholder"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
+        :disabled="disabled"
       />
       <span v-if="left" class="icon is-small is-left">
         <i class="fas" :class="[left]"></i>
@@ -36,6 +37,7 @@ export default defineComponent({
     "color",
     "left",
     "right",
+    "disabled",
   ],
   emits: ["update:modelValue"],
 });

@@ -3,8 +3,6 @@ const AUTH_ERROR = "AUTH_ERROR";
 const AUTH_LOGOUT = "AUTH_LOGOUT";
 const AUTH_LOGINED = "AUTH_LOGINED";
 const AUTH_SIGNIN = "AUTH_SIGNIN";
-const AUTH_MODAL_ON = "AUTH_MODAL_ON";
-const AUTH_MODAL_OFF = "AUTH_MODAL_OFF";
 
 import { login, signin } from "@/api/auth";
 import { RootState } from "@/store/index";
@@ -13,14 +11,12 @@ import { Module } from "vuex";
 export interface AuthState {
   token: string;
   status: string;
-  modal: boolean;
 }
 
 const auth_module: Module<AuthState, RootState> = {
   state: (): AuthState => ({
     token: localStorage.getItem("user-token") || "",
     status: "",
-    modal: false,
   }),
   mutations: {
     [AUTH_REQUEST]: (state) => {
@@ -39,12 +35,6 @@ const auth_module: Module<AuthState, RootState> = {
     [AUTH_LOGINED]: (state, token: string) => {
       state.status = AUTH_LOGINED;
       state.token = token;
-    },
-    [AUTH_MODAL_ON]: (state) => {
-      state.modal = true;
-    },
-    [AUTH_MODAL_OFF]: (state) => {
-      state.modal = false;
     },
   },
   actions: {
@@ -84,11 +74,8 @@ const auth_module: Module<AuthState, RootState> = {
     },
   },
   getters: {
-    isAuthenticated(state) {
+    isAuthenticated(state): boolean {
       return !!state.token;
-    },
-    authStatus(state) {
-      return state.status;
     },
     authHeader(state) {
       return { Authorization: `Bearer ${state.token}` };
@@ -103,6 +90,4 @@ export {
   AUTH_LOGOUT,
   AUTH_REQUEST,
   AUTH_SIGNIN,
-  AUTH_MODAL_ON,
-  AUTH_MODAL_OFF,
 };

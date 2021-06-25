@@ -26,12 +26,24 @@
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
-            <router-link to="/login" class="button is-primary"
+            <router-link
+              v-if="!isAuthenticated"
+              to="/sigin"
+              class="button is-primary"
               >Sign up
             </router-link>
-            <router-link to="/login" class="button is-light"
+            <router-link
+              v-if="!isAuthenticated"
+              to="/login"
+              class="button is-light"
               >Log in
             </router-link>
+            <router-link
+              v-if="isAuthenticated"
+              to="/logout"
+              class="button is-danger"
+              >Log out</router-link
+            >
           </div>
         </div>
       </div>
@@ -49,10 +61,11 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const isMenuActive = computed(() => store.state.isMenuActive);
+    const isAuthenticated = computed(() => store.getters.isAuthenticated);
     const togleMenu = function () {
       store.commit(TogleMenu);
     };
-    return { isMenuActive, togleMenu };
+    return { isMenuActive, togleMenu, isAuthenticated };
   },
 });
 </script>

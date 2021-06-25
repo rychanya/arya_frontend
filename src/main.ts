@@ -9,12 +9,14 @@ import {
   faKey,
   faCheck,
   faExclamationTriangle,
+  faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(faUser);
 library.add(faKey);
 library.add(faCheck);
 library.add(faExclamationTriangle);
+library.add(faSpinner);
 dom.watch();
 
 const app = createApp(App);
