@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { store } from "@/store/index";
-import {AUTH_LOGOUT} from "@/store/modules/auth"
+import { AUTH_LOGOUT } from "@/store/modules/auth";
 
 function get_auth_header(): string {
   return store.getters.authHeader;
@@ -14,7 +14,7 @@ if (process.env.NODE_ENV == "development") {
 axios.interceptors.response.use(undefined, function (error: AxiosError) {
   return new Promise(function () {
     if (error.response?.status === 401 && error.config) {
-      store.dispatch(AUTH_LOGOUT)
+      store.dispatch(AUTH_LOGOUT);
     }
     throw error;
   });

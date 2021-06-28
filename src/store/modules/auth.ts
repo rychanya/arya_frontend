@@ -77,14 +77,14 @@ const auth_module: Module<AuthState, RootState> = {
           .then((token) => {
             localStorage.setItem("user-token", token);
             commit(AUTH_LOGINED, token);
-            resolve()
+            resolve();
           })
           .catch((error) => {
             console.log(error);
             commit(AUTH_ERROR);
             localStorage.removeItem("user-token");
-            reject(error)
-          })
+            reject(error);
+          });
       });
     },
     [AUTH_SET_USERNAME]: ({ commit }) => {

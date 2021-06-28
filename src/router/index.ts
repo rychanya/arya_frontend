@@ -6,7 +6,7 @@ import Search from "@/views/Search.vue";
 import UpLoad from "@/views/UpLoad.vue";
 import Login from "@/views/Login.vue";
 import NotFound from "@/views/NotFound.vue";
-import SignIn from "@/views/SignIn.vue" 
+import SignIn from "@/views/SignIn.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
