@@ -1,4 +1,11 @@
 import axios, { AxiosError } from "axios";
+import { store } from "@/store/index";
+import {AUTH_LOGOUT} from "@/store/modules/auth"
+
+function get_auth_header(): string {
+  return store.getters.authHeader;
+}
+
 if (process.env.NODE_ENV == "development") {
   axios.defaults.baseURL = "http://127.0.0.1:8000/";
 } else {
@@ -7,8 +14,7 @@ if (process.env.NODE_ENV == "development") {
 axios.interceptors.response.use(undefined, function (error: AxiosError) {
   return new Promise(function () {
     if (error.response?.status === 401 && error.config) {
-      console.log("interceptors");
-      console.log(axios.defaults.baseURL);
+      store.dispatch(AUTH_LOGOUT)
     }
     throw error;
   });
@@ -28,4 +34,4 @@ function parseError(error: Error | AxiosError): string {
   }
 }
 
-export { axios, parseError };
+export { axios, parseError, get_auth_header };

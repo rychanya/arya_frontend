@@ -1,4 +1,4 @@
-import { axios, parseError } from "@/api/api";
+import { axios, parseError, get_auth_header } from "@/api/api";
 
 export interface Login {
   username: string;
@@ -43,4 +43,20 @@ function signin(payload: Login): Promise<string> {
   });
 }
 
-export { login, signin };
+function get_current_user(): Promise<string> {
+  return new Promise((resolve, reject) => {
+    axios({
+      url: "/auth/me",
+      method: "GET",
+      headers: get_auth_header(),
+    })
+      .then((resp) => {
+        resolve(resp.data);
+      })
+      .catch((error) => {
+        reject(parseError(error));
+      });
+  });
+}
+
+export { login, signin, get_current_user };

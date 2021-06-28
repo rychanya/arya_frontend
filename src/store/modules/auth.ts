@@ -3,20 +3,24 @@ const AUTH_ERROR = "AUTH_ERROR";
 const AUTH_LOGOUT = "AUTH_LOGOUT";
 const AUTH_LOGINED = "AUTH_LOGINED";
 const AUTH_SIGNIN = "AUTH_SIGNIN";
+const AUTH_SET_USERNAME = "AUTH_SET_USERNAME";
+const AUTH_DEL_USERNAME = "AUTH_DEL_USERNAME";
 
-import { login, signin } from "@/api/auth";
+import { login, signin, get_current_user } from "@/api/auth";
 import { RootState } from "@/store/index";
 import { Module } from "vuex";
 
 export interface AuthState {
   token: string;
   status: string;
+  username: string;
 }
 
 const auth_module: Module<AuthState, RootState> = {
   state: (): AuthState => ({
     token: localStorage.getItem("user-token") || "",
     status: "",
+    username: "",
   }),
   mutations: {
     [AUTH_REQUEST]: (state) => {
@@ -35,6 +39,12 @@ const auth_module: Module<AuthState, RootState> = {
     [AUTH_LOGINED]: (state, token: string) => {
       state.status = AUTH_LOGINED;
       state.token = token;
+    },
+    [AUTH_SET_USERNAME]: (state, username: string) => {
+      state.username = username;
+    },
+    [AUTH_DEL_USERNAME]: (state) => {
+      state.username = "";
     },
   },
   actions: {
@@ -57,20 +67,39 @@ const auth_module: Module<AuthState, RootState> = {
     },
     [AUTH_LOGOUT]: ({ commit }) => {
       commit(AUTH_LOGOUT);
+      commit(AUTH_DEL_USERNAME);
       localStorage.removeItem("user-token");
     },
     [AUTH_SIGNIN]: ({ commit }, payload) => {
       commit(AUTH_SIGNIN);
-      signin(payload)
-        .then((token) => {
-          localStorage.setItem("user-token", token);
-          commit(AUTH_LOGINED, token);
-        })
-        .catch((error) => {
-          console.log(error);
-          commit(AUTH_ERROR);
-          localStorage.removeItem("user-token");
-        });
+      return new Promise<void>((resolve, reject) => {
+        signin(payload)
+          .then((token) => {
+            localStorage.setItem("user-token", token);
+            commit(AUTH_LOGINED, token);
+            resolve()
+          })
+          .catch((error) => {
+            console.log(error);
+            commit(AUTH_ERROR);
+            localStorage.removeItem("user-token");
+            reject(error)
+          })
+      });
+    },
+    [AUTH_SET_USERNAME]: ({ commit }) => {
+      return new Promise<void>((resolve, reject) => {
+        get_current_user()
+          .then((username) => {
+            commit(AUTH_SET_USERNAME, username);
+            resolve();
+          })
+          .catch((error) => {
+            console.log(error);
+            commit(AUTH_DEL_USERNAME);
+            reject(error);
+          });
+      });
     },
   },
   getters: {
@@ -79,6 +108,9 @@ const auth_module: Module<AuthState, RootState> = {
     },
     authHeader(state) {
       return { Authorization: `Bearer ${state.token}` };
+    },
+    username(state) {
+      return state.username;
     },
   },
 };
@@ -90,4 +122,6 @@ export {
   AUTH_LOGOUT,
   AUTH_REQUEST,
   AUTH_SIGNIN,
+  AUTH_DEL_USERNAME,
+  AUTH_SET_USERNAME,
 };

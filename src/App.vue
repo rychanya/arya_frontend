@@ -26,23 +26,22 @@
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
-            <router-link
-              v-if="!isAuthenticated"
-              to="/sigin"
-              class="button is-primary"
-              >Sign up
-            </router-link>
-            <router-link
-              v-if="!isAuthenticated"
-              to="/login"
-              class="button is-light"
-              >Log in
-            </router-link>
-            <router-link
-              v-if="isAuthenticated"
-              to="/logout"
-              class="button is-danger"
-              >Log out</router-link
+            <template v-if="!isAuthenticated">
+              <router-link to="/signin" class="button is-primary"
+                >Sign up
+              </router-link>
+              <router-link to="/login" class="button is-light"
+                >Log in
+              </router-link></template
+            >
+            <template v-if="isAuthenticated">
+              <button class="button">
+                <span class="icon">
+                  <i class="fas fa-user"></i>
+                </span>
+                <span>{{ userName }}</span>
+              </button>
+              <a class="button is-danger" @click="logout">Log out </a></template
             >
           </div>
         </div>
@@ -57,15 +56,22 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 import { useStore, TogleMenu } from "@/store/index";
+import { AUTH_LOGOUT } from "@/store/modules/auth";
+import { useRouter } from "vue-router";
 export default defineComponent({
   setup() {
     const store = useStore();
+    const router = useRouter();
     const isMenuActive = computed(() => store.state.isMenuActive);
     const isAuthenticated = computed(() => store.getters.isAuthenticated);
+    const userName = computed(() => store.getters.username);
     const togleMenu = function () {
       store.commit(TogleMenu);
     };
-    return { isMenuActive, togleMenu, isAuthenticated };
+    const logout = function () {
+      store.dispatch(AUTH_LOGOUT).then(() => router.push("/"));
+    };
+    return { isMenuActive, togleMenu, isAuthenticated, logout, userName };
   },
 });
 </script>
