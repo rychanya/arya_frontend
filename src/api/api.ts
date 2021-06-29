@@ -1,8 +1,9 @@
 import axios, { AxiosError } from "axios";
 import { store } from "@/store/index";
+import router from "@/router/index";
 import { AUTH_LOGOUT } from "@/store/modules/auth";
 
-function get_auth_header(): string {
+function get_auth_header(): { Authorization: string } {
   return store.getters.authHeader;
 }
 
@@ -15,6 +16,7 @@ axios.interceptors.response.use(undefined, function (error: AxiosError) {
   return new Promise(function () {
     if (error.response?.status === 401 && error.config) {
       store.dispatch(AUTH_LOGOUT);
+      router.push("/login");
     }
     throw error;
   });

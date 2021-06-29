@@ -1,4 +1,4 @@
-import { axios, parseError } from "@/api/api";
+import { axios, parseError, get_auth_header } from "@/api/api";
 
 type answerType = string | Array<string> | { [answer: string]: string };
 
@@ -40,7 +40,7 @@ function upload(file: File): Promise<string> {
     axios({
       url: "qa/upload",
       method: "POST",
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: { "Content-Type": "multipart/form-data", ...get_auth_header() },
       data: formData,
     })
       .then((resp) => {
