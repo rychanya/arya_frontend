@@ -16,11 +16,14 @@ function upload(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const formData = new FormData();
     formData.append("file", file);
+    // const params = new URLSearchParams()
+    // params.append("file", file)
     axios({
       url: "uploads",
       method: "POST",
-      headers: { "Content-Type": "multipart/form-data", ...get_auth_header() },
+      headers: { "Content-Type": "application/x-www-form-urlencoded", ...get_auth_header() },
       data: formData,
+      // data: params
     })
       .then((resp) => {
         resolve(resp.data);
