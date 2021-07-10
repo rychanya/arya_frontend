@@ -12,22 +12,43 @@ export interface Upload {
   by: string;
 }
 
+// function upload(file: File): Promise<string> {
+//   return new Promise((resolve, reject) => {
+//     const formData = new FormData();
+//     formData.append("file", file);
+//     axios({
+//       withCredentials: true,
+//       url: "uploads",
+//       method: "POST",
+//       headers: { "Content-Type": "multipart/form-data", ...get_auth_header() },
+//       data: formData,
+//     })
+//       .then((resp) => {
+//         resolve(resp.data);
+//       })
+//       .catch((error) => {
+//         reject(parseError(error));
+//       });
+//   });
+// }
+
 function upload(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const formData = new FormData();
     formData.append("file", file);
-    axios({
-      withCredentials: true,
-      url: "uploads",
+    fetch("https://arya-backend.herokuapp.com/uploads", {
+      mode: "cors",
+      // credentials: 'include',
       method: "POST",
-      headers: { "Content-Type": "multipart/form-data", ...get_auth_header() },
-      data: formData,
+      body: formData,
+      headers: get_auth_header(),
     })
       .then((resp) => {
-        resolve(resp.data);
+        resolve(resp.json());
       })
       .catch((error) => {
-        reject(parseError(error));
+        console.log(error);
+        reject();
       });
   });
 }
