@@ -35,12 +35,10 @@ export interface Upload {
 function upload(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const formData = new FormData();
-    // formData.append("file", file);
-    formData.append("a", '5555');
-
+    formData.append("file", file);
     fetch(`${axios.defaults.baseURL}uploads`, {
       mode: "cors",
-      // credentials: 'include',
+      credentials: "include",
       method: "POST",
       body: formData,
       headers: get_auth_header(),
