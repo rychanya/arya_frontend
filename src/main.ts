@@ -10,6 +10,7 @@ import {
   faCheck,
   faExclamationTriangle,
   faSpinner,
+  faUpload,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(faUser);
@@ -17,6 +18,7 @@ library.add(faKey);
 library.add(faCheck);
 library.add(faExclamationTriangle);
 library.add(faSpinner);
+library.add(faUpload);
 dom.watch();
 
 const app = createApp(App);

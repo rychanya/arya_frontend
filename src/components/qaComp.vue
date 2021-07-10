@@ -1,9 +1,13 @@
 <template>
   <nav class="panel">
-    <div class="panel-block has-background-light">
+    <div
+      class="panel-block has-background-light"
+      :class="{ 'has-background-danger-light': isInc }"
+    >
       <div class="container">
         <p class="title is-5">{{ qa.question }}</p>
         <p class="subtitle is-6">{{ qa.type }}</p>
+        <p v-if="isInc">Добавлено сообществом</p>
       </div>
     </div>
     <div class="panel-block">
@@ -58,6 +62,33 @@
           </tr>
         </tbody>
       </table>
+
+      <div v-if="isInc">
+        <table
+          class="table is-fullwidth"
+          v-for="qa_inc in qa.answers"
+          :key="qa_inc.id"
+        >
+          <thead>
+            <tr>
+              <th>
+                {{ qa_inc.id }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="answer in qa_inc.answer"
+              :key="answer"
+              :class="{
+                'has-background-success': qa_inc.is_correct,
+              }"
+            >
+              <td>{{ answer }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </nav>
 </template>
@@ -75,24 +106,33 @@ export default defineComponent({
   setup(props) {
     const { qa } = toRefs(props);
     const isOne = computed(() => {
-      return qa.value.type == "Выберите один правильный вариант";
+      return (
+        qa.value.type == "Выберите один правильный вариант" && "_id" in qa.value
+      );
     });
     const isMany = computed(() => {
-      return qa.value.type == "Выберите все правильные варианты";
+      return (
+        qa.value.type == "Выберите все правильные варианты" && "_id" in qa.value
+      );
     });
     const isDrag = computed(() => {
       return (
         qa.value.type ==
-        "Перетащите варианты так, чтобы они оказались в правильном порядке"
+          "Перетащите варианты так, чтобы они оказались в правильном порядке" &&
+        "_id" in qa.value
       );
     });
     const isJoin = computed(() => {
       return (
         qa.value.type ==
-        "Соедините соответствия справа с правильными вариантами"
+          "Соедините соответствия справа с правильными вариантами" &&
+        "_id" in qa.value
       );
     });
-    return { isOne, isMany, isDrag, isJoin };
+    const isInc = computed(() => {
+      return !("_id" in qa.value);
+    });
+    return { isOne, isMany, isDrag, isJoin, isInc };
   },
 });
 </script>

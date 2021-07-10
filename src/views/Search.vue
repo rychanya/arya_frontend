@@ -57,8 +57,8 @@ export default defineComponent({
       qas.value = [];
       search(q.value, page)
         .then((data) => {
-          qas.value = data[0];
-          paginator.value = data[1];
+          qas.value = data;
+          // paginator.value = data[1];
         })
         .catch((err) => {
           error.value = true;

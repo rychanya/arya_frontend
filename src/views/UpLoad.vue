@@ -5,35 +5,48 @@
         class="file-input"
         type="file"
         name="resume"
-        @change="previewFiles"
+        @change="uploadFile"
       />
       <span class="file-cta">
+        <span class="file-icon">
+          <i class="fas fa-upload"></i>
+        </span>
         <span class="file-label"> Choose a file… </span>
       </span>
     </label>
   </div>
+  <div v-for="upload in uploads" :key="upload.id" @click="click(upload._id)">
+    {{ upload._id }}
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Ref, computed } from "vue";
-import { upload } from "@/api/qa";
+import { defineComponent, onMounted, ref, Ref } from "vue";
+import { upload, Upload, getUploads } from "@/api/upload";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   setup() {
-    let file: Ref<File | null> = ref(null);
-    const filename = computed(() => {
-      return file.value?.name;
+    const router = useRouter();
+    const uploads: Ref<Array<Upload>> = ref([]);
+    onMounted(() => {
+      getUploads().then((data) => {
+        uploads.value = data;
+      });
     });
-    const previewFiles = function (event: Event) {
+    const uploadFile = function (event: Event) {
       const files = (event.target as HTMLInputElement).files;
       if (files) {
-        file.value = files[0];
-        upload(files[0]).then((data) => console.log(data));
-      } else {
-        file.value = null;
+        upload(files[0]).then((upload_id) => {
+          router.push({ name: "UpLoadDetail", params: { id: upload_id } });
+        });
       }
     };
-    return { previewFiles, file, filename };
+    const click = function (id: string) {
+      router.push(`/upload/${id}`);
+    };
+
+    return { uploadFile, uploads, click };
   },
 });
 </script>

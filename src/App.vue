@@ -56,7 +56,7 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 import { useStore, TogleMenu } from "@/store/index";
-import { AUTH_LOGOUT } from "@/store/modules/auth";
+import { AUTH_LOGOUT, AUTH_SET_USERNAME } from "@/store/modules/auth";
 import { useRouter } from "vue-router";
 export default defineComponent({
   setup() {
@@ -64,7 +64,12 @@ export default defineComponent({
     const router = useRouter();
     const isMenuActive = computed(() => store.state.isMenuActive);
     const isAuthenticated = computed(() => store.getters.isAuthenticated);
-    const userName = computed(() => store.getters.username);
+    const userName = computed(() => {
+      if (store.getters.username == "" && isAuthenticated.value) {
+        store.dispatch(AUTH_SET_USERNAME);
+      }
+      return store.getters.username;
+    });
     const togleMenu = function () {
       store.commit(TogleMenu);
     };

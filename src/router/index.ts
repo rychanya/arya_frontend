@@ -7,6 +7,9 @@ import UpLoad from "@/views/UpLoad.vue";
 import Login from "@/views/Login.vue";
 import NotFound from "@/views/NotFound.vue";
 import SignIn from "@/views/SignIn.vue";
+import UploadDetail from "@/views/UploadDetail.vue";
+import QADetail from "@/views/QADetail.vue";
+import QAINCDetail from "@/views/QAINCDetail.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -23,6 +26,33 @@ const routes: Array<RouteRecordRaw> = [
     component: Search,
     meta: {
       title: "Search",
+    },
+  },
+  {
+    path: "/upload/:id",
+    name: "UpLoadDetail",
+    component: UploadDetail,
+    meta: {
+      requiresAuth: true,
+      title: "Upload Detail",
+    },
+  },
+  {
+    path: "/qa/:id",
+    name: "QADetail",
+    component: QADetail,
+    meta: {
+      requiresAuth: true,
+      title: "QA Detail",
+    },
+  },
+  {
+    path: "/qa/inc/:id",
+    name: "QAINCDetail",
+    component: QAINCDetail,
+    meta: {
+      requiresAuth: true,
+      title: "QA INC Detail",
     },
   },
   {
@@ -74,6 +104,7 @@ router.beforeEach((to) => {
     };
   }
 });
+
 router.afterEach((to) => {
   const title = to.meta.title || "";
   document.title = `Kitten answers ${title}`;
