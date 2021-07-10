@@ -22,6 +22,8 @@ axios.interceptors.response.use(undefined, function (error: AxiosError) {
   });
 });
 
+axios.defaults.withCredentials = true
+
 function parseError(error: Error | AxiosError): string {
   if (axios.isAxiosError(error)) {
     if (error.response) {
