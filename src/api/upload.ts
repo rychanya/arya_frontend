@@ -35,8 +35,10 @@ export interface Upload {
 function upload(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const formData = new FormData();
-    formData.append("file", file);
-    fetch("https://arya-backend.herokuapp.com/uploads", {
+    // formData.append("file", file);
+    formData.append("a", '5555');
+
+    fetch(`${axios.defaults.baseURL}uploads`, {
       mode: "cors",
       // credentials: 'include',
       method: "POST",
