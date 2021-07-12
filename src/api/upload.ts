@@ -12,46 +12,49 @@ export interface Upload {
   by: string;
 }
 
-// function upload(file: File): Promise<string> {
-//   return new Promise((resolve, reject) => {
-//     const formData = new FormData();
-//     formData.append("file", file);
-//     axios({
-//       withCredentials: true,
-//       url: "uploads",
-//       method: "POST",
-//       headers: { "Content-Type": "multipart/form-data", ...get_auth_header() },
-//       data: formData,
-//     })
-//       .then((resp) => {
-//         resolve(resp.data);
-//       })
-//       .catch((error) => {
-//         reject(parseError(error));
-//       });
-//   });
-// }
-
 function upload(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
-    const formData = new FormData();
-    formData.append("file", file);
-    fetch(`${axios.defaults.baseURL}uploads`, {
-      mode: "cors",
-      credentials: "include",
+    // const formData = new FormData();
+    // formData.append("file", file);
+    // formData.append("a", "nnn");
+    axios({
+      withCredentials: true,
+      url: "uploads",
       method: "POST",
-      body: formData,
       headers: get_auth_header(),
+      // data: formData,
+      data: {a: "4"}
     })
       .then((resp) => {
-        resolve(resp.json());
+        resolve(resp.data);
       })
       .catch((error) => {
-        console.log(error);
-        reject();
+        reject(parseError(error));
       });
   });
 }
+
+// function upload(file: File): Promise<string> {
+//   return new Promise((resolve, reject) => {
+//     const formData = new FormData();
+//     // formData.append("file", file);
+//     formData.append("idd", "123");
+//     fetch(`${axios.defaults.baseURL}uploads`, {
+//       mode: "cors",
+//       credentials: "include",
+//       method: "POST",
+//       body: formData,
+//       headers: get_auth_header(),
+//     })
+//       .then((resp) => {
+//         resolve(resp.json());
+//       })
+//       .catch((error) => {
+//         console.log(error);
+//         reject();
+//       });
+//   });
+// }
 
 function getUploadByID(id: string): Promise<Upload> {
   return new Promise((resolve, reject) => {

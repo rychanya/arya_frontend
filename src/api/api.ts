@@ -12,6 +12,7 @@ if (process.env.NODE_ENV == "development") {
 } else {
   axios.defaults.baseURL = "https://arya-backend.herokuapp.com/";
 }
+
 axios.interceptors.response.use(undefined, function (error: AxiosError) {
   return new Promise(function () {
     if (error.response?.status === 401 && error.config) {

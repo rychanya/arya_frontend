@@ -38,7 +38,8 @@ export default defineComponent({
       const files = (event.target as HTMLInputElement).files;
       if (files) {
         upload(files[0]).then((upload_id) => {
-          router.push({ name: "UpLoadDetail", params: { id: upload_id } });
+          console.log(upload_id)
+          // router.push({ name: "UpLoadDetail", params: { id: upload_id } });
         });
       }
     };
