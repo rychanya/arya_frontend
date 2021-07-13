@@ -12,7 +12,7 @@ export interface Upload {
   by: string;
 }
 
-function upload(file: File): Promise<string> {
+function upload(data: any): Promise<string> {
   return new Promise((resolve, reject) => {
     // const formData = new FormData();
     // formData.append("file", file);
@@ -23,7 +23,7 @@ function upload(file: File): Promise<string> {
       method: "POST",
       headers: get_auth_header(),
       // data: formData,
-      data: {a: "4"}
+      data: data,
     })
       .then((resp) => {
         resolve(resp.data);
