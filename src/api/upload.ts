@@ -23,7 +23,7 @@ function upload(data: any): Promise<string> {
       method: "POST",
       headers: get_auth_header(),
       // data: formData,
-      data: {data: JSON.stringify(data)},
+      data: {user: '1'},
     })
       .then((resp) => {
         resolve(resp.data);
