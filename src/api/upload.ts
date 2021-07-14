@@ -14,16 +14,12 @@ export interface Upload {
 
 function upload(data: any): Promise<string> {
   return new Promise((resolve, reject) => {
-    // const formData = new FormData();
-    // formData.append("file", file);
-    // formData.append("a", "nnn");
     axios({
       withCredentials: true,
       url: "uploads",
       method: "POST",
       headers: get_auth_header(),
-      // data: formData,
-      data: {user: '1'},
+      data: { answer: data["Вопрос"] },
     })
       .then((resp) => {
         resolve(resp.data);
@@ -33,28 +29,6 @@ function upload(data: any): Promise<string> {
       });
   });
 }
-
-// function upload(file: File): Promise<string> {
-//   return new Promise((resolve, reject) => {
-//     const formData = new FormData();
-//     // formData.append("file", file);
-//     formData.append("idd", "123");
-//     fetch(`${axios.defaults.baseURL}uploads`, {
-//       mode: "cors",
-//       credentials: "include",
-//       method: "POST",
-//       body: formData,
-//       headers: get_auth_header(),
-//     })
-//       .then((resp) => {
-//         resolve(resp.json());
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//         reject();
-//       });
-//   });
-// }
 
 function getUploadByID(id: string): Promise<Upload> {
   return new Promise((resolve, reject) => {

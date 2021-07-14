@@ -25,46 +25,64 @@
       </button>
     </div>
   </div>
-  <template v-for="(t, title) in json_data" :key="title">
-    <h1 class="title">{{ title }}</h1>
-    <table class="table box">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Вопрос</th>
-          <th>Правильный</th>
-          <th>Баллы</th>
-          <th>Ответ</th>
-          <th>Затраченное время (сек.)</th>
-          <th>Тип</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="row in t" :key="row">
-          <td>{{ row["#"] }}</td>
-          <td>{{ row["Вопрос"] }}</td>
-          <td>{{ row["Правильный"] }}</td>
-          <td>{{ row["Баллы"] }}</td>
-          <td>{{ row["Ответ"] }}</td>
-          <td>{{ row["Затраченное время (сек.)"] }}</td>
-          <td>{{ row["Тип"] }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </template>
+
+  <table class="table box">
+    <thead>
+      <tr>
+        <th>Страница/#</th>
+        <th>Вопрос</th>
+        <th>Правильный</th>
+        <th>Баллы</th>
+        <th>Ответ</th>
+        <th>Затраченное время (сек.)</th>
+        <th>Тип</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="row in normalize_json" :key="row">
+        <td>{{ row["title"] }}/{{ row["#"] }}</td>
+        <td>{{ row["Вопрос"] }}</td>
+        <td>{{ row["Правильный"] }}</td>
+        <td>{{ row["Баллы"] }}</td>
+        <td>{{ row["Ответ"] }}</td>
+        <td>{{ row["Затраченное время (сек.)"] }}</td>
+        <td>{{ row["Тип"] }}</td>
+      </tr>
+    </tbody>
+  </table>
 </template>
 
 <script lang="ts">
 import XLSX from "xlsx";
-import { defineComponent, ref, Ref } from "vue";
+import { defineComponent, ref, Ref, computed } from "vue";
 import { upload } from "@/api/upload";
 import { useRouter } from "vue-router";
+
+interface XLSXQA {
+  "#": string;
+  Вопрос: string;
+  Правильный: string;
+  Баллы: string;
+  Ответ: string;
+  "Затраченное время (сек.)": string;
+  Тип: string;
+  title?: string;
+}
 
 export default defineComponent({
   setup() {
     const router = useRouter();
     const isFileLoad = ref(false);
-    const json_data: Ref<any> = ref({});
+    const json_data: Ref<{ [key: string]: Array<XLSXQA> }> = ref({});
+    const normalize_json = computed(() => {
+      let result: Array<XLSXQA> = [];
+      for (const [title, qas] of Object.entries(json_data.value)) {
+        for (const el of qas) {
+          result.push({ title: title, ...el });
+        }
+      }
+      return result;
+    });
     const uploadFile = function (event: Event) {
       const files = (event.target as HTMLInputElement).files;
       if (files) {
@@ -86,7 +104,7 @@ export default defineComponent({
       }
     };
     const uploadJSON = function () {
-      upload(json_data.value).then((id) => {
+      upload(normalize_json.value[0]).then((id) => {
         console.log(id);
       });
     };
@@ -94,7 +112,14 @@ export default defineComponent({
       router.push(`/upload/${id}`);
     };
 
-    return { uploadFile, click, json_data, uploadJSON, isFileLoad };
+    return {
+      uploadFile,
+      click,
+      json_data,
+      uploadJSON,
+      isFileLoad,
+      normalize_json,
+    };
   },
 });
 </script>
