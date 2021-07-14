@@ -8,5 +8,6 @@
         "/api/": {
             "origin": "https://${API_APP_NAME}.herokuapp.com/"
         }
-    }
+    },
+    "https_only": true
 }
