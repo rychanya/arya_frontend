@@ -1,6 +1,7 @@
 <template>
-  <div class="field is-grouped">
-    <div v-if="!isFileLoad" class="file is-warning control">
+  <div v-if="!isFileLoad" class="box">
+    <p class="block">Выберите файл для загрузки</p>
+    <div class="file is-warning control">
       <label class="file-label">
         <input
           class="file-input"
@@ -12,21 +13,24 @@
           <span class="file-icon">
             <i class="fas fa-upload"></i>
           </span>
-          <span class="file-label"> Choose a file… </span>
+          <span class="file-label">Выбрать файл ... </span>
         </span>
       </label>
     </div>
-    <div v-if="isFileLoad" class="control">
+  </div>
+  <div v-if="isFileLoad" class="box">
+    <p class="block">Если таблица ниже правильная, нажмите сохранить</p>
+    <div class="control">
       <button class="button is-success" @click="uploadJSON">
         <span class="icon is-small">
           <i class="fas fa-check"></i>
         </span>
-        <span>Save</span>
+        <span>Сохранить</span>
       </button>
     </div>
   </div>
 
-  <table class="table box">
+  <table v-if="isFileLoad" class="table box">
     <thead>
       <tr>
         <th>Страница/#</th>
@@ -105,7 +109,7 @@ export default defineComponent({
     };
     const uploadJSON = function () {
       upload(normalize_json.value).then((id) => {
-        console.log(id);
+        router.push(`/upload/${id}`);
       });
     };
     const click = function (id: string) {
