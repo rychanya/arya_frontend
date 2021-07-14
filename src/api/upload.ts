@@ -12,14 +12,31 @@ export interface Upload {
   by: string;
 }
 
-function upload(data: any): Promise<string> {
+export interface XLSXQA {
+  "#": string;
+  Вопрос: string;
+  Правильный: string;
+  Баллы: string;
+  Ответ: string;
+  "Затраченное время (сек.)": string;
+  Тип: string;
+  title?: string;
+}
+
+function upload(data: XLSXQA): Promise<string> {
   return new Promise((resolve, reject) => {
     axios({
       withCredentials: true,
       url: "uploads",
       method: "POST",
       headers: get_auth_header(),
-      data: { answer: data["Вопрос"] },
+      data: {
+        answer: data["Вопрос"],
+        title: data["title"],
+        question: data["Вопрос"],
+        type: data["Тип"],
+        is_correct: data["Правильный"],
+      },
     })
       .then((resp) => {
         resolve(resp.data);
