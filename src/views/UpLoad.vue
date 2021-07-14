@@ -104,7 +104,7 @@ export default defineComponent({
       }
     };
     const uploadJSON = function () {
-      upload(normalize_json.value[0]).then((id) => {
+      upload(normalize_json.value).then((id) => {
         console.log(id);
       });
     };

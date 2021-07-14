@@ -23,20 +23,24 @@ export interface XLSXQA {
   title?: string;
 }
 
-function upload(data: XLSXQA): Promise<string> {
+
+function upload(data:Array<XLSXQA>): Promise<string> {
+  const payload = data.map(el => {
+    return {
+      answer: el["Вопрос"],
+      title: el["title"],
+      question: el["Вопрос"],
+      type: el["Тип"],
+      is_correct: el["Правильный"],
+    }
+  })
   return new Promise((resolve, reject) => {
     axios({
       withCredentials: true,
       url: "uploads",
       method: "POST",
       headers: get_auth_header(),
-      data: {
-        answer: data["Вопрос"],
-        title: data["title"],
-        question: data["Вопрос"],
-        type: data["Тип"],
-        is_correct: data["Правильный"],
-      },
+      data: payload,
     })
       .then((resp) => {
         resolve(resp.data);
