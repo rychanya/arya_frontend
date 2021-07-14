@@ -37,7 +37,7 @@ function upload(data:Array<XLSXQA>): Promise<string> {
   return new Promise((resolve, reject) => {
     axios({
       withCredentials: true,
-      url: "uploads",
+      url: "uploads/",
       method: "POST",
       headers: get_auth_header(),
       data: payload,
