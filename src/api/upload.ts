@@ -53,7 +53,7 @@ function upload(data: Array<XLSXQA>): Promise<string> {
 function getUploadByID(id: string): Promise<Upload> {
   return new Promise((resolve, reject) => {
     axios({
-      url: `uploads/${id}/`,
+      url: `/uploads/${id}`,
       method: "GET",
       headers: get_auth_header(),
     })
