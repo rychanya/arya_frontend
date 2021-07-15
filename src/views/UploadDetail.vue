@@ -1,7 +1,7 @@
 <template>
   <h1 class="title">Отчет об загрузке</h1>
   <h2 class="subtitle">id {{ upload_id }}</h2>
-  <template v-if="upload && upload.data.length > 0">
+  <template v-if="isLoaded">
     <div class="field is-grouped is-grouped-multiline">
       <div class="control">
         <div class="tags has-addons">
@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, Ref, computed } from "vue";
+import { defineComponent, onMounted, ref, Ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { getUploadByID, Upload, UploadEl } from "@/api/upload";
 export default defineComponent({
@@ -46,24 +46,19 @@ export default defineComponent({
     const route = useRoute();
     let upload_id: Ref<string> = ref(route.params.id as string);
     let upload: Ref<Upload | undefined> = ref(undefined);
+    let uploadLen: Ref<number> = ref(0);
+    let uploadNewLen: Ref<number> = ref(0);
+    let isLoaded: Ref<boolean> = ref(false);
     onMounted(() => {
       getUploadByID(upload_id.value).then((data) => {
         upload.value = data;
+        console.log(data);
+        uploadLen.value = upload.value.data.length;
+        uploadNewLen.value = upload.value.data.filter((el) => el.new).length;
+        if (uploadLen.value > 0) {
+          isLoaded.value = true;
+        }
       });
-    });
-    const uploadLen = computed(() => {
-      if (upload.value) {
-        return upload.value.data.length;
-      } else {
-        return 0;
-      }
-    });
-    const uploadNewLen = computed(() => {
-      if (upload.value) {
-        return upload.value.data.filter((el) => el.new).length;
-      } else {
-        return 0;
-      }
     });
     const click = function (qa: UploadEl) {
       if (qa.col == "QA") {
@@ -73,7 +68,7 @@ export default defineComponent({
       }
     };
 
-    return { upload, upload_id, click, uploadLen, uploadNewLen };
+    return { upload, upload_id, click, uploadLen, uploadNewLen, isLoaded };
   },
 });
 </script>
