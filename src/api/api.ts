@@ -10,7 +10,7 @@ function get_auth_header(): { Authorization: string } {
 if (process.env.NODE_ENV == "development") {
   axios.defaults.baseURL = "http://127.0.0.1:8000/";
 } else {
-  axios.defaults.baseURL = "https://kittyanswers.herokuapp.com/api/";
+  axios.defaults.baseURL = "api/";
 }
 
 axios.interceptors.response.use(undefined, function (error: AxiosError) {
