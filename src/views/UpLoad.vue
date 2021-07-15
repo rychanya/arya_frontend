@@ -58,7 +58,7 @@
 
 <script lang="ts">
 import XLSX from "xlsx";
-import { defineComponent, ref, Ref, computed } from "vue";
+import { defineComponent, ref, Ref } from "vue";
 import { upload } from "@/api/upload";
 import { useRouter } from "vue-router";
 
@@ -77,16 +77,16 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const isFileLoad = ref(false);
-    const json_data: Ref<{ [key: string]: Array<XLSXQA> }> = ref({});
-    const normalize_json = computed(() => {
-      let result: Array<XLSXQA> = [];
-      for (const [title, qas] of Object.entries(json_data.value)) {
-        for (const el of qas) {
-          result.push({ title: title, ...el });
-        }
-      }
-      return result;
-    });
+    const normalize_json: Ref<Array<XLSXQA>> = ref([]);
+    // const normalize_json = computed(() => {
+    //   let result: Array<XLSXQA> = [];
+    //   for (const [title, qas] of Object.entries(json_data.value)) {
+    //     for (const el of qas) {
+    //       result.push({ title: title, ...el });
+    //     }
+    //   }
+    //   return result;
+    // });
     const uploadFile = function (event: Event) {
       const files = (event.target as HTMLInputElement).files;
       if (files) {
@@ -95,12 +95,19 @@ export default defineComponent({
           if (e.target?.result) {
             const data = new Uint8Array(e.target?.result as ArrayBufferLike);
             const book = XLSX.read(data, { type: "array" });
-            let result: any = {};
+            let result: Array<XLSXQA> = [];
             book.SheetNames.forEach((name) => {
-              const roa = XLSX.utils.sheet_to_json(book.Sheets[name]);
-              if (roa.length > 0) result[name] = roa;
+              const roa = XLSX.utils.sheet_to_json(
+                book.Sheets[name]
+              ) as Array<XLSXQA>;
+              if (roa.length > 0) {
+                for (const el of roa) {
+                  result.push({ title: name, ...el });
+                }
+              }
+              // result[name] = roa;
             });
-            json_data.value = result;
+            normalize_json.value = result;
             isFileLoad.value = true;
           }
         };
@@ -119,7 +126,6 @@ export default defineComponent({
     return {
       uploadFile,
       click,
-      json_data,
       uploadJSON,
       isFileLoad,
       normalize_json,

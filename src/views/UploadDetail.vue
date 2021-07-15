@@ -1,7 +1,7 @@
 <template>
   <h1 class="title">Отчет об загрузке</h1>
   <h2 class="subtitle">id {{ upload_id }}</h2>
-  <template v-if="uploadLen > 0">
+  <template v-if="upload && upload.data.length > 0">
     <div class="field is-grouped is-grouped-multiline">
       <div class="control">
         <div class="tags has-addons">
@@ -11,8 +11,8 @@
       </div>
       <div class="control">
         <div class="tags has-addons">
-          <span class="tag is-dark">Правильных</span>
-          <span class="tag is-success">{{ uploadCorrectLen }}</span>
+          <span class="tag is-dark">Новых</span>
+          <span class="tag is-success">{{ uploadNewLen }}</span>
         </div>
       </div>
     </div>
@@ -45,7 +45,7 @@ export default defineComponent({
     const router = useRouter();
     const route = useRoute();
     let upload_id: Ref<string> = ref(route.params.id as string);
-    let upload: Ref<Upload | undefined> = ref();
+    let upload: Ref<Upload | undefined> = ref(undefined);
     onMounted(() => {
       getUploadByID(upload_id.value).then((data) => {
         upload.value = data;
@@ -58,7 +58,7 @@ export default defineComponent({
         return 0;
       }
     });
-    const uploadCorrectLen = computed(() => {
+    const uploadNewLen = computed(() => {
       if (upload.value) {
         return upload.value.data.filter((el) => el.new).length;
       } else {
@@ -73,7 +73,7 @@ export default defineComponent({
       }
     };
 
-    return { upload, upload_id, click, uploadLen, uploadCorrectLen };
+    return { upload, upload_id, click, uploadLen, uploadNewLen };
   },
 });
 </script>
