@@ -11,7 +11,7 @@ function login(payload: Login): Promise<string> {
     bodyFormData.append("username", payload.username);
     bodyFormData.append("password", payload.password);
     axios({
-      url: "/auth/token/",
+      url: "auth/token/",
       data: bodyFormData,
       method: "POST",
       headers: { "Content-Type": "multipart/form-data" },
@@ -29,7 +29,7 @@ function login(payload: Login): Promise<string> {
 function signin(payload: Login): Promise<string> {
   return new Promise((resolve, reject) => {
     axios({
-      url: "/auth/signin/",
+      url: "auth/signin/",
       data: { username: payload.username, password: payload.password },
       method: "POST",
     })
@@ -46,7 +46,7 @@ function signin(payload: Login): Promise<string> {
 function get_current_user(): Promise<string> {
   return new Promise((resolve, reject) => {
     axios({
-      url: "/auth/me/",
+      url: "auth/me/",
       method: "GET",
       headers: get_auth_header(),
     })
