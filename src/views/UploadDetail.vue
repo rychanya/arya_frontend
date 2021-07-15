@@ -52,7 +52,6 @@ export default defineComponent({
     onMounted(() => {
       getUploadByID(upload_id.value).then((data) => {
         upload.value = data;
-        console.log(data);
         uploadLen.value = upload.value.data.length;
         uploadNewLen.value = upload.value.data.filter((el) => el.new).length;
         if (uploadLen.value > 0) {

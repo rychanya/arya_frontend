@@ -82,28 +82,4 @@ function getUploads(): Promise<Array<Upload>> {
   });
 }
 
-function downloadByID(id: string): Promise<void> {
-  console.log(id);
-  return new Promise((resolve, reject) => {
-    axios({
-      url: `uploads/file/${id}`,
-      method: "GET",
-      responseType: "blob",
-      headers: get_auth_header(),
-    })
-      .then((resp) => {
-        const fileURL = window.URL.createObjectURL(new Blob([resp.data]));
-        const link = document.createElement("a");
-        link.href = fileURL;
-        link.setAttribute("download", `${id}.xlsx`);
-        document.body.appendChild(link);
-        link.click();
-        resolve();
-      })
-      .catch((error) => {
-        reject(parseError(error));
-      });
-  });
-}
-
-export { upload, getUploadByID, downloadByID, getUploads };
+export { upload, getUploadByID, getUploads };

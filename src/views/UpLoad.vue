@@ -78,15 +78,6 @@ export default defineComponent({
     const router = useRouter();
     const isFileLoad = ref(false);
     const normalize_json: Ref<Array<XLSXQA>> = ref([]);
-    // const normalize_json = computed(() => {
-    //   let result: Array<XLSXQA> = [];
-    //   for (const [title, qas] of Object.entries(json_data.value)) {
-    //     for (const el of qas) {
-    //       result.push({ title: title, ...el });
-    //     }
-    //   }
-    //   return result;
-    // });
     const uploadFile = function (event: Event) {
       const files = (event.target as HTMLInputElement).files;
       if (files) {
@@ -105,7 +96,6 @@ export default defineComponent({
                   result.push({ title: name, ...el });
                 }
               }
-              // result[name] = roa;
             });
             normalize_json.value = result;
             isFileLoad.value = true;
