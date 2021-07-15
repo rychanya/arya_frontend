@@ -29,7 +29,7 @@ export interface Paginator {
 function search(q: string, page = 1): Promise<Array<QA>> {
   return new Promise((resolve, reject) => {
     axios({
-      url: "/qa/search",
+      url: "/qa/search/",
       params: { q: q, page: page },
       method: "GET",
     })
@@ -45,7 +45,7 @@ function search(q: string, page = 1): Promise<Array<QA>> {
 function getQA(id: string): Promise<QA> {
   return new Promise((resolve, reject) => {
     axios({
-      url: `/qa/${id}`,
+      url: `/qa/${id}/`,
       method: "GET",
     })
       .then((resp) => {
@@ -60,7 +60,7 @@ function getQA(id: string): Promise<QA> {
 function getQAINC(id: string): Promise<QAINC> {
   return new Promise((resolve, reject) => {
     axios({
-      url: `/qa/inc/${id}`,
+      url: `/qa/inc/${id}/`,
       method: "GET",
     })
       .then((resp) => {

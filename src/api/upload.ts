@@ -53,7 +53,7 @@ function upload(data: Array<XLSXQA>): Promise<string> {
 function getUploadByID(id: string): Promise<Upload> {
   return new Promise((resolve, reject) => {
     axios({
-      url: `uploads/${id}`,
+      url: `uploads/${id}/`,
       method: "GET",
       headers: get_auth_header(),
     })
@@ -69,7 +69,7 @@ function getUploadByID(id: string): Promise<Upload> {
 function getUploads(): Promise<Array<Upload>> {
   return new Promise((resolve, reject) => {
     axios({
-      url: `uploads`,
+      url: `uploads/`,
       method: "GET",
       headers: get_auth_header(),
     })
@@ -86,7 +86,7 @@ function downloadByID(id: string): Promise<void> {
   console.log(id);
   return new Promise((resolve, reject) => {
     axios({
-      url: `uploads/file/${id}`,
+      url: `uploads/file/${id}/`,
       method: "GET",
       responseType: "blob",
       headers: get_auth_header(),
