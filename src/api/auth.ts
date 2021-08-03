@@ -1,4 +1,5 @@
 import { axios, parseError, get_auth_header } from "@/api/api";
+import { AxiosError } from "axios";
 
 export interface Login {
   username: string;
@@ -11,7 +12,7 @@ function login(payload: Login): Promise<string> {
     bodyFormData.append("username", payload.username);
     bodyFormData.append("password", payload.password);
     axios({
-      url: "auth/token",
+      url: "user/token",
       data: bodyFormData,
       method: "POST",
       headers: { "Content-Type": "multipart/form-data" },
@@ -20,7 +21,10 @@ function login(payload: Login): Promise<string> {
         const token = resp.data.access_token;
         resolve(token);
       })
-      .catch((err) => {
+      .catch((err: AxiosError) => {
+        if (err.response?.status == 401) {
+          reject("Неправильное имя или пароль");
+        }
         reject(parseError(err));
       });
   });
@@ -29,7 +33,7 @@ function login(payload: Login): Promise<string> {
 function signin(payload: Login): Promise<string> {
   return new Promise((resolve, reject) => {
     axios({
-      url: "auth/signin",
+      url: "user",
       data: { username: payload.username, password: payload.password },
       method: "POST",
     })
@@ -46,7 +50,7 @@ function signin(payload: Login): Promise<string> {
 function get_current_user(): Promise<string> {
   return new Promise((resolve, reject) => {
     axios({
-      url: "auth/me",
+      url: "user",
       method: "GET",
       headers: get_auth_header(),
     })

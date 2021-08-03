@@ -5,18 +5,21 @@
       label="Username"
       left="fa-user"
       :disabled="isLoading"
+      type="text"
     ></input-comp>
     <input-comp
       v-model="password"
       label="Password"
       left="fa-key"
       :disabled="isLoading"
+      type="password"
     ></input-comp>
     <input-comp
       v-model="password2"
       label="Password"
       left="fa-key"
       :disabled="isLoading"
+      type="password"
     ></input-comp>
     <div class="field is-grouped is-grouped-centered">
       <p class="control">

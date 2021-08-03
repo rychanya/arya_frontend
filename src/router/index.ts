@@ -10,12 +10,16 @@ import SignIn from "@/views/SignIn.vue";
 import UploadDetail from "@/views/UploadDetail.vue";
 import QADetail from "@/views/QADetail.vue";
 import QAINCDetail from "@/views/QAINCDetail.vue";
+import NavBar from "@/views/NavBar.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "Home",
-    component: Home,
+    components: {
+      default: Home,
+      navbar: NavBar,
+    },
     meta: {
       title: "",
     },
@@ -23,7 +27,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/search",
     name: "Search",
-    component: Search,
+    components: {
+      default: Search,
+      navbar: NavBar,
+    },
     meta: {
       title: "Search",
     },
@@ -31,7 +38,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/upload/:id",
     name: "UpLoadDetail",
-    component: UploadDetail,
+    components: {
+      default: UploadDetail,
+      navbar: NavBar,
+    },
     meta: {
       requiresAuth: true,
       title: "Upload Detail",
@@ -40,7 +50,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/qa/:id",
     name: "QADetail",
-    component: QADetail,
+    components: {
+      default: QADetail,
+      navbar: NavBar,
+    },
     meta: {
       requiresAuth: true,
       title: "QA Detail",
@@ -49,7 +62,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/qa/inc/:id",
     name: "QAINCDetail",
-    component: QAINCDetail,
+    components: {
+      default: QAINCDetail,
+      navbar: NavBar,
+    },
     meta: {
       requiresAuth: true,
       title: "QA INC Detail",
@@ -57,8 +73,11 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/upload",
-    name: "UoLoad",
-    component: UpLoad,
+    name: "UpLoad",
+    components: {
+      default: UpLoad,
+      navbar: NavBar,
+    },
     meta: {
       requiresAuth: true,
       title: "Upload",
@@ -67,7 +86,9 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/login",
     name: "login",
-    component: Login,
+    components: {
+      default: Login,
+    },
     meta: {
       title: "Login",
     },
@@ -75,7 +96,9 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/signin",
     name: "signin",
-    component: SignIn,
+    components: {
+      default: SignIn,
+    },
     meta: {
       title: "Signin",
     },
@@ -83,7 +106,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/:pathMatch(.*)",
     name: "not-found",
-    component: NotFound,
+    components: {
+      default: NotFound,
+      navbar: NavBar,
+    },
     meta: {
       title: "404 Not Found",
     },
