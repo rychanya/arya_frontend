@@ -72,14 +72,17 @@ export default defineComponent({
     let username: Ref<string> = ref("");
     let password: Ref<string> = ref("");
     let isLoading: Ref<boolean> = ref(false);
+    const $externalResults = ref({});
     const rules = computed(() => ({
       username: {
         required,
       },
       password: { required },
     }));
-    const v = useVuelidate(rules, { username, password });
+    const v = useVuelidate(rules, { username, password }, { $externalResults });
     const login = function () {
+      v.value.$touch();
+      if (v.value.$error) return;
       isLoading.value = true;
       store
         .dispatch(AUTH_REQUEST, {
@@ -91,7 +94,7 @@ export default defineComponent({
           router.push((route.query.redirect as string) || "/");
         })
         .catch((error) => {
-          // errors.value.push(error);
+          $externalResults.value = { api: error };
         })
         .finally(() => {
           isLoading.value = false;
