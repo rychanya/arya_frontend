@@ -7,7 +7,10 @@
     >
       <input
         class="input"
-        :class="[color]"
+        :class="{
+          'is-danger': validation.$error,
+          'is-success': !validation.$invalid,
+        }"
         :type="type"
         :placeholder="placeholder"
         :value="modelValue"
@@ -21,7 +24,13 @@
         <i class="fas" :class="[right]"></i>
       </span>
     </div>
-    <p v-if="help" class="help" :class="[color]">{{ help }}</p>
+    <p
+      v-for="error in validation.$errors"
+      class="help is-danger"
+      :key="error.$uid"
+    >
+      {{ error.$message }}
+    </p>
   </div>
 </template>
 
@@ -31,13 +40,12 @@ export default defineComponent({
   props: [
     "modelValue",
     "label",
-    "help",
     "placeholder",
     "type",
-    "color",
     "left",
     "right",
     "disabled",
+    "validation",
   ],
   emits: ["update:modelValue"],
 });

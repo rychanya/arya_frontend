@@ -6,52 +6,24 @@
           <div class="columnn">
             <h1 class="title">Войти</h1>
             <form class="box">
-              <div class="field">
-                <label class="label">Имя</label>
-                <p class="control has-icons-left">
-                  <input
-                    class="input"
-                    type="text"
-                    placeholder="Имя"
-                    v-model="v.username.$model"
-                    @input="validate"
-                    :disabled="isLoading"
-                  />
-                  <span class="icon is-small is-left">
-                    <i class="fas fa-user"></i>
-                  </span>
-                </p>
-                <p
-                  v-for="error in usernameHelp"
-                  :key="error"
-                  class="help is-danger"
-                >
-                  {{ error }}
-                </p>
-              </div>
-              <div class="field">
-                <label class="label">Пароль</label>
-                <p class="control has-icons-left">
-                  <input
-                    class="input"
-                    type="password"
-                    placeholder="*******"
-                    v-model="password"
-                    @input="validate"
-                    :disabled="isLoading"
-                  />
-                  <span class="icon is-small is-left">
-                    <i class="fas fa-key"></i>
-                  </span>
-                </p>
-                <p
-                  v-for="error in passwordHelp"
-                  :key="error"
-                  class="help is-danger"
-                >
-                  {{ error }}
-                </p>
-              </div>
+              <input-comp
+                :disabled="isLoading"
+                placeholder="Имя"
+                left="fa-user"
+                label="Имя"
+                type="text"
+                :validation="v.username"
+                v-model="v.username.$model"
+              ></input-comp>
+              <input-comp
+                :disabled="isLoading"
+                placeholder="Пароль"
+                left="fa-key"
+                label="Пароль"
+                type="password"
+                :validation="v.password"
+                v-model="v.password.$model"
+              ></input-comp>
               <div class="level">
                 <div class="level-left">
                   <button
@@ -73,11 +45,6 @@
                   </router-link>
                 </div>
               </div>
-              <div
-                class="notification is-danger"
-              >
-                {{ v.username.$errors }}
-              </div>
             </form>
           </div>
         </div>
@@ -93,44 +60,26 @@ import { AUTH_REQUEST, AUTH_SET_USERNAME } from "@/store/modules/auth";
 import { useRoute, useRouter } from "vue-router";
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
+import inputComp from "@/components/inputComp.vue";
 
 export default defineComponent({
+  components: { inputComp },
   name: "Login",
   setup() {
     let store = useStore();
     let route = useRoute();
     let router = useRouter();
     let username: Ref<string> = ref("");
-    // let usernameHelp = ref<Array<string>>([]);
-    // let passwordHelp = ref<Array<string>>([]);
     let password: Ref<string> = ref("");
     let isLoading: Ref<boolean> = ref(false);
     const rules = computed(() => ({
       username: {
         required,
       },
+      password: { required },
     }));
-    const v = useVuelidate(rules, { username });
-    // let errors = ref<Array<string>>([]);
-    // const validate = function () {
-    //   let result = true;
-    //   usernameHelp.value = [];
-    //   passwordHelp.value = [];
-    //   errors.value = [];
-    //   if (username.value.length == 0) {
-    //     usernameHelp.value.push("Имя не может быть пустым");
-    //     result = false;
-    //   }
-    //   if (password.value.length == 0) {
-    //     passwordHelp.value.push("Пароль не может быть пустым");
-    //     result = false;
-    //   }
-    //   return result;
-    // };
+    const v = useVuelidate(rules, { username, password });
     const login = function () {
-      // if (!validate()) {
-      //   return;
-      // }
       isLoading.value = true;
       store
         .dispatch(AUTH_REQUEST, {
@@ -154,10 +103,6 @@ export default defineComponent({
       password,
       isLoading,
       login,
-      // errors,
-      // usernameHelp,
-      // passwordHelp,
-      // validate,
       v,
     };
   },
