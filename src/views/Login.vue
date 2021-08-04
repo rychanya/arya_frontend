@@ -13,7 +13,7 @@
                     class="input"
                     type="text"
                     placeholder="Имя"
-                    v-model="username"
+                    v-model="v.username.$model"
                     @input="validate"
                     :disabled="isLoading"
                   />
@@ -74,11 +74,9 @@
                 </div>
               </div>
               <div
-                v-for="error in errors"
                 class="notification is-danger"
-                :key="error"
               >
-                {{ error }}
+                {{ v.username.$errors }}
               </div>
             </form>
           </div>
@@ -89,10 +87,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Ref } from "vue";
+import { defineComponent, ref, Ref, computed } from "vue";
 import { useStore } from "@/store/index";
 import { AUTH_REQUEST, AUTH_SET_USERNAME } from "@/store/modules/auth";
 import { useRoute, useRouter } from "vue-router";
+import { useVuelidate } from "@vuelidate/core";
+import { required } from "@vuelidate/validators";
 
 export default defineComponent({
   name: "Login",
@@ -101,30 +101,36 @@ export default defineComponent({
     let route = useRoute();
     let router = useRouter();
     let username: Ref<string> = ref("");
-    let usernameHelp = ref<Array<string>>([]);
-    let passwordHelp = ref<Array<string>>([]);
+    // let usernameHelp = ref<Array<string>>([]);
+    // let passwordHelp = ref<Array<string>>([]);
     let password: Ref<string> = ref("");
     let isLoading: Ref<boolean> = ref(false);
-    let errors = ref<Array<string>>([]);
-    const validate = function () {
-      let result = true;
-      usernameHelp.value = [];
-      passwordHelp.value = [];
-      errors.value = [];
-      if (username.value.length == 0) {
-        usernameHelp.value.push("Имя не может быть пустым");
-        result = false;
-      }
-      if (password.value.length == 0) {
-        passwordHelp.value.push("Пароль не может быть пустым");
-        result = false;
-      }
-      return result;
-    };
+    const rules = computed(() => ({
+      username: {
+        required,
+      },
+    }));
+    const v = useVuelidate(rules, { username });
+    // let errors = ref<Array<string>>([]);
+    // const validate = function () {
+    //   let result = true;
+    //   usernameHelp.value = [];
+    //   passwordHelp.value = [];
+    //   errors.value = [];
+    //   if (username.value.length == 0) {
+    //     usernameHelp.value.push("Имя не может быть пустым");
+    //     result = false;
+    //   }
+    //   if (password.value.length == 0) {
+    //     passwordHelp.value.push("Пароль не может быть пустым");
+    //     result = false;
+    //   }
+    //   return result;
+    // };
     const login = function () {
-      if (!validate()) {
-        return;
-      }
+      // if (!validate()) {
+      //   return;
+      // }
       isLoading.value = true;
       store
         .dispatch(AUTH_REQUEST, {
@@ -136,7 +142,7 @@ export default defineComponent({
           router.push((route.query.redirect as string) || "/");
         })
         .catch((error) => {
-          errors.value.push(error);
+          // errors.value.push(error);
         })
         .finally(() => {
           isLoading.value = false;
@@ -148,10 +154,11 @@ export default defineComponent({
       password,
       isLoading,
       login,
-      errors,
-      usernameHelp,
-      passwordHelp,
-      validate,
+      // errors,
+      // usernameHelp,
+      // passwordHelp,
+      // validate,
+      v,
     };
   },
 });
