@@ -1,59 +1,71 @@
 <template>
-  <div v-if="!isFileLoad" class="box">
-    <p class="block">Выберите файл для загрузки</p>
-    <div class="file is-warning control">
-      <label class="file-label">
-        <input
-          class="file-input"
-          type="file"
-          name="resume"
-          @change="uploadFile"
-        />
-        <span class="file-cta">
-          <span class="file-icon">
-            <i class="fas fa-upload"></i>
-          </span>
-          <span class="file-label">Выбрать файл ... </span>
-        </span>
-      </label>
-    </div>
-  </div>
-  <div v-if="isFileLoad" class="box">
-    <p class="block">Если таблица ниже правильная, нажмите сохранить</p>
-    <div class="control">
-      <button class="button is-success" @click="uploadJSON">
-        <span class="icon is-small">
-          <i class="fas fa-check"></i>
-        </span>
-        <span>Сохранить</span>
-      </button>
-    </div>
-  </div>
+  <div class="hero is-primary is-fullheight-with-navbar">
+    <div class="hero-body">
+      <div class="container is-fluid">
+        <div class="columns">
+          <div class="column is-12 is-block">
+            <div v-if="!isFileLoad" class="box">
+              <p class="block">Выберите файл для загрузки</p>
+              <div class="file is-warning control">
+                <label class="file-label">
+                  <input
+                    class="file-input"
+                    type="file"
+                    name="resume"
+                    @change="uploadFile"
+                  />
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-upload"></i>
+                    </span>
+                    <span class="file-label">Выбрать файл ... </span>
+                  </span>
+                </label>
+              </div>
+            </div>
+            <div v-if="isFileLoad" class="box">
+              <p class="block">
+                Если таблица ниже правильная, нажмите сохранить
+              </p>
+              <div class="control">
+                <button class="button is-success" @click="uploadJSON">
+                  <span class="icon is-small">
+                    <i class="fas fa-check"></i>
+                  </span>
+                  <span>Сохранить</span>
+                </button>
+              </div>
+            </div>
 
-  <table v-if="isFileLoad" class="table box">
-    <thead>
-      <tr>
-        <th>Страница/#</th>
-        <th>Вопрос</th>
-        <th>Правильный</th>
-        <th>Баллы</th>
-        <th>Ответ</th>
-        <th>Затраченное время (сек.)</th>
-        <th>Тип</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="row in normalize_json" :key="row">
-        <td>{{ row["title"] }}/{{ row["#"] }}</td>
-        <td>{{ row["Вопрос"] }}</td>
-        <td>{{ row["Правильный"] }}</td>
-        <td>{{ row["Баллы"] }}</td>
-        <td>{{ row["Ответ"] }}</td>
-        <td>{{ row["Затраченное время (сек.)"] }}</td>
-        <td>{{ row["Тип"] }}</td>
-      </tr>
-    </tbody>
-  </table>
+            <table v-if="isFileLoad" class="table box">
+              <thead>
+                <tr>
+                  <th>Страница/#</th>
+                  <th>Вопрос</th>
+                  <th>Правильный</th>
+                  <th>Баллы</th>
+                  <th>Ответ</th>
+                  <th>Затраченное время (сек.)</th>
+                  <th>Тип</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="row in normalize_json" :key="row">
+                  <td>{{ row["title"] }}/{{ row["#"] }}</td>
+                  <td>{{ row["Вопрос"] }}</td>
+                  <td>{{ row["Правильный"] }}</td>
+                  <td>{{ row["Баллы"] }}</td>
+                  <td>{{ row["Ответ"] }}</td>
+                  <td>{{ row["Затраченное время (сек.)"] }}</td>
+                  <td>{{ row["Тип"] }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">

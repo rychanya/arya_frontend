@@ -1,39 +1,38 @@
 <template>
-  <h1 class="title">Отчет об загрузке</h1>
-  <h2 class="subtitle">id {{ upload_id }}</h2>
-  <template v-if="isLoaded">
-    <div class="field is-grouped is-grouped-multiline">
-      <div class="control">
-        <div class="tags has-addons">
-          <span class="tag is-dark">Всего</span>
-          <span class="tag is-info">{{ uploadLen }}</span>
-        </div>
-      </div>
-      <div class="control">
-        <div class="tags has-addons">
-          <span class="tag is-dark">Новых</span>
-          <span class="tag is-success">{{ uploadNewLen }}</span>
+  <div class="hero is-primary is-fullheight-with-navbar">
+    <div class="hero-body">
+      <div class="container is-fluid">
+        <div class="columns">
+          <div class="column is-12 is-block">
+            <h1 class="title">Отчет об загрузке</h1>
+            <h2 class="subtitle">id {{ upload_id }}</h2>
+            <template v-if="isLoaded">
+              <div class="box">
+                Успешно загружен
+                <div class="field is-grouped is-grouped-multiline">
+                  <div class="control">
+                    <div class="tags has-addons">
+                      <span class="tag is-dark">Всего</span>
+                      <span class="tag is-info">{{ uploadLen }}</span>
+                    </div>
+                  </div>
+                  <div class="control">
+                    <div class="tags has-addons">
+                      <span class="tag is-dark">Новых</span>
+                      <span class="tag is-success">{{ uploadNewLen }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </template>
+            <template v-else>
+              <div class="box">Идет обработка. Обновите страницу позже.</div>
+            </template>
+          </div>
         </div>
       </div>
     </div>
-    <table class="table box">
-      <thead>
-        <tr>
-          <th>id</th>
-          <th>Новая</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="qa in upload.data" :key="qa.id" @click="click(qa)">
-          <td>{{ qa.id }}</td>
-          <td>{{ qa.new }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </template>
-  <template v-else>
-    <div class="box">Идет обработка. Обновите страницу позже.</div>
-  </template>
+  </div>
 </template>
 
 <script lang="ts">

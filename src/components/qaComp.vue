@@ -1,95 +1,93 @@
 <template>
-  <nav class="panel">
-    <div
-      class="panel-block has-background-light"
-      :class="{ 'has-background-danger-light': isInc }"
+  <nav class="panel has-background-white has-text-black">
+    <div class="panel-heading">
+      <p class="title is-5 has-text-black">{{ qa.question }}</p>
+      <p class="subtitle is-6 has-text-black">{{ qa.type }}</p>
+    </div>
+
+    <a v-if="isInc" class="panel-block has-background-warning"
+      >Добавлено сообществом</a
     >
-      <div class="container">
-        <p class="title is-5">{{ qa.question }}</p>
-        <p class="subtitle is-6">{{ qa.type }}</p>
-        <p v-if="isInc">Добавлено сообществом</p>
-      </div>
-    </div>
-    <div class="panel-block">
-      <table class="table is-fullwidth" v-if="isOne">
-        <tbody>
-          <tr
-            v-for="answer in qa.answers"
-            :key="answer"
-            :class="{ 'has-background-success': answer == qa.correct }"
-          >
-            <td>{{ answer }}</td>
-          </tr>
-        </tbody>
-      </table>
 
-      <table class="table is-fullwidth" v-if="isMany">
-        <tbody>
-          <tr
-            v-for="answer in qa.answers"
-            :key="answer"
-            :class="{
-              'has-background-success': qa.correct.includes(answer),
-            }"
-          >
-            <td>{{ answer }}</td>
-          </tr>
-        </tbody>
-      </table>
+    <template v-if="isOne">
+      <a v-for="answer in qa.answers" :key="answer" class="panel-block">
+        <span class="panel-icon">
+          <i
+            class="fas"
+            :class="
+              answer == qa.correct
+                ? 'fa-check has-text-success'
+                : 'fa-ban has-text-danger'
+            "
+            aria-hidden="true"
+          ></i>
+        </span>
+        {{ answer }}
+      </a>
+    </template>
 
-      <table class="table is-fullwidth" v-if="isDrag">
-        <tbody>
-          <tr
-            v-for="(answer, index) in qa.correct"
-            :key="answer"
-            class="has-background-success"
-          >
-            <th>{{ index + 1 }}</th>
-            <td>{{ answer }}</td>
-          </tr>
-        </tbody>
-      </table>
+    <template v-if="isMany">
+      <a v-for="answer in qa.answers" :key="answer" class="panel-block">
+        <span class="panel-icon">
+          <i
+            class="fas"
+            :class="
+              qa.correct.includes(answer)
+                ? 'fa-check has-text-success'
+                : 'fa-ban has-text-danger'
+            "
+            aria-hidden="true"
+          ></i>
+        </span>
+        {{ answer }}
+      </a>
+    </template>
 
-      <table class="table is-fullwidth" v-if="isJoin">
-        <tbody>
-          <tr
-            v-for="(extra, answer) in qa.correct"
-            :key="answer"
-            class="has-background-success"
-          >
-            <td>{{ answer }}</td>
-            <td>{{ extra }}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div v-if="isInc">
-        <table
-          class="table is-fullwidth"
-          v-for="qa_inc in qa.answers"
-          :key="qa_inc.id"
+    <table class="table is-fullwidth" v-if="isDrag">
+      <tbody>
+        <tr
+          v-for="(answer, index) in qa.correct"
+          :key="answer"
+          class="has-background-success"
         >
-          <thead>
-            <tr>
-              <th>
-                {{ qa_inc.id }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="answer in qa_inc.answer"
-              :key="answer"
-              :class="{
-                'has-background-success': qa_inc.is_correct,
-              }"
-            >
-              <td>{{ answer }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+          <th>{{ index + 1 }}</th>
+          <td>{{ answer }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="table is-fullwidth" v-if="isJoin">
+      <tbody>
+        <tr
+          v-for="(extra, answer) in qa.correct"
+          :key="answer"
+          class="has-background-success"
+        >
+          <td>{{ answer }}</td>
+          <td>{{ extra }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <template v-if="isInc">
+      <template v-for="qa_inc in qa.answers" :key="qa_inc.id">
+        <a class="panel-block has-background-grey-lighter">{{ qa_inc.id }}</a>
+        <a v-for="answer in qa_inc.answer" :key="answer" class="panel-block">
+          <span class="panel-icon">
+            <i
+              class="fas"
+              :class="
+                qa_inc.is_correct
+                  ? 'fa-check has-text-success'
+                  : 'fa-ban has-text-danger'
+              "
+              aria-hidden="true"
+            ></i>
+          </span>
+          {{ answer }}
+        </a>
+      </template>
+    </template>
   </nav>
 </template>
 

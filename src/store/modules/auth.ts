@@ -74,15 +74,14 @@ const auth_module: Module<AuthState, RootState> = {
       commit(AUTH_SIGNIN);
       return new Promise<void>((resolve, reject) => {
         signin(payload)
-          .then((token) => {
-            localStorage.setItem("user-token", token);
-            commit(AUTH_LOGINED, token);
-            resolve();
+          .then((data) => {
+            if (data.data == "OK") {
+              resolve();
+            } else reject(data.error);
           })
           .catch((error) => {
             console.log(error);
             commit(AUTH_ERROR);
-            localStorage.removeItem("user-token");
             reject(error);
           });
       });
