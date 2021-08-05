@@ -1,50 +1,52 @@
 <template>
-  <section class="section">
-    <div class="field has-addons">
-      <div class="control is-expanded">
-        <input
-          class="input"
-          type="text"
-          placeholder="serch"
-          v-model="q"
-          @keypress.enter="searchMethod(1)"
-        />
-      </div>
-      <div class="control">
-        <div
-          class="button"
-          @click="searchMethod(1)"
-          :class="{ 'is-loading': loading }"
-        >
-          Search
+  <div class="hero is-primary is-fullheight-with-navbar">
+    <div class="hero-body">
+      <div class="container is-fluid">
+        <div class="columns">
+          <div class="column is-12 is-block">
+            <div class="field has-addons">
+              <div class="control is-expanded">
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="Поиск"
+                  v-model="q"
+                  @keypress.enter="searchMethod(1)"
+                />
+              </div>
+              <div class="control">
+                <div
+                  class="button"
+                  @click="searchMethod(1)"
+                  :class="{ 'is-loading': loading }"
+                >
+                  <span class="icon is-small">
+                    <i class="fas fa-search"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <transition-group
+              enter-active-class="animate__animated animate__bounceIn"
+              leave-active-class="animate__animated animate__bounceOut"
+            >
+              <qa-comp v-for="qa in qas" :key="qa._id" :qa="qa"></qa-comp>
+            </transition-group>
+          </div>
         </div>
       </div>
     </div>
-  </section>
-  <section class="section">
-    <transition-group
-      enter-active-class="animate__animated animate__bounceIn"
-      leave-active-class="animate__animated animate__bounceOut"
-    >
-      <qa-comp v-for="qa in qas" :key="qa._id" :qa="qa"></qa-comp>
-    </transition-group>
-    <pagination-comp
-      :all="paginator.all"
-      :current="paginator.current"
-      @goto="searchMethod"
-    ></pagination-comp>
-  </section>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { search, QA, Paginator } from "@/api/qa";
-import PaginationComp from "@/components/PaginationComp.vue";
 import qaComp from "@/components/qaComp.vue";
 
 export default defineComponent({
   name: "Search",
-  components: { PaginationComp, qaComp },
+  components: { qaComp },
   setup() {
     let q = ref("");
     let qas = ref<Array<QA>>([]);

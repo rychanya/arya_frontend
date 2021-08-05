@@ -88,6 +88,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "login",
     components: {
       default: Login,
+      navbar: NavBar,
     },
     meta: {
       title: "Login",
@@ -98,6 +99,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "signin",
     components: {
       default: SignIn,
+      navbar: NavBar,
     },
     meta: {
       title: "Signin",

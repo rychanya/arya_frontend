@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a
         role="button"
@@ -18,9 +18,25 @@
 
     <div class="navbar-menu" :class="{ 'is-active': isMenuActive }">
       <div class="navbar-start">
-        <router-link to="/" class="navbar-item">Home</router-link>
-        <router-link to="/search" class="navbar-item">Search</router-link>
-        <router-link to="/upload" class="navbar-item">UpLoad</router-link>
+        <router-link to="/" class="navbar-item"
+          ><span class="icon"> <i class="fas fa-home"></i> </span
+        ></router-link>
+        <router-link to="/search" class="navbar-item"
+          ><span class="icon-text">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+            <span>Поиск</span>
+          </span></router-link
+        >
+        <router-link to="/upload" class="navbar-item"
+          ><span class="icon-text">
+            <span class="icon">
+              <i class="fas fa-upload"></i>
+            </span>
+            <span>Загрузить</span>
+          </span></router-link
+        >
       </div>
 
       <div class="navbar-end">
@@ -28,10 +44,10 @@
           <div class="buttons">
             <template v-if="!isAuthenticated">
               <router-link to="/signin" class="button is-primary"
-                >Sign up
+                >Регистрация
               </router-link>
               <router-link to="/login" class="button is-light"
-                >Log in
+                >Войти
               </router-link></template
             >
             <template v-if="isAuthenticated">
@@ -41,7 +57,7 @@
                 </span>
                 <span>{{ userName }}</span>
               </button>
-              <a class="button is-danger" @click="logout">Log out </a></template
+              <a class="button is-danger" @click="logout">Выйти</a></template
             >
           </div>
         </div>

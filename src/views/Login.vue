@@ -1,10 +1,21 @@
 <template>
-  <section class="hero is-primary is-fullheight">
+  <section class="hero is-primary is-fullheight-with-navbar">
     <div class="hero-body">
       <div class="container">
         <div class="columns is-centered">
-          <div class="columnn">
-            <h1 class="title">Войти</h1>
+          <div class="column is-half">
+            <nav class="level is-mobile">
+              <div class="level-left">
+                <div class="level-item has-text-centered">
+                  <h1 class="title">Войти</h1>
+                </div>
+              </div>
+              <div class="level-right">
+                <div class="level-item has-text-centered">
+                  <router-link to="/signin" class=""> Регистрация </router-link>
+                </div>
+              </div>
+            </nav>
             <form class="box">
               <input-comp
                 :disabled="isLoading"
@@ -14,6 +25,7 @@
                 type="text"
                 :validation="v.username"
                 v-model="v.username.$model"
+                @input="v.$clearExternalResults"
               ></input-comp>
               <input-comp
                 :disabled="isLoading"
@@ -23,28 +35,17 @@
                 type="password"
                 :validation="v.password"
                 v-model="v.password.$model"
+                @input="v.$clearExternalResults"
               ></input-comp>
-              <div class="level">
-                <div class="level-left">
-                  <button
-                    class="button is-success level-item"
-                    :class="{ 'is-loading': isLoading }"
-                    @click.prevent="login"
-                    @keypress.enter.prevent="login"
-                    :disabled="isLoading"
-                  >
-                    Войти
-                  </button>
-                </div>
-                <div class="level-right">
-                  <router-link
-                    to="/signin"
-                    class="button is-success is-inverted level-item"
-                  >
-                    Регестрация
-                  </router-link>
-                </div>
-              </div>
+              <button
+                class="button is-success"
+                :class="{ 'is-loading': isLoading }"
+                @click.prevent="login"
+                @keypress.enter.prevent="login"
+                :disabled="isLoading"
+              >
+                Войти
+              </button>
             </form>
           </div>
         </div>
@@ -74,14 +75,13 @@ export default defineComponent({
     let isLoading: Ref<boolean> = ref(false);
     const $externalResults = ref({});
     const rules = computed(() => ({
-      username: {
-        required,
-      },
+      username: { required },
       password: { required },
     }));
     const v = useVuelidate(rules, { username, password }, { $externalResults });
     const login = function () {
       v.value.$touch();
+      v.value.$clearExternalResults();
       if (v.value.$error) return;
       isLoading.value = true;
       store
@@ -94,7 +94,7 @@ export default defineComponent({
           router.push((route.query.redirect as string) || "/");
         })
         .catch((error) => {
-          $externalResults.value = { api: error };
+          $externalResults.value = { username: error, password: error };
         })
         .finally(() => {
           isLoading.value = false;

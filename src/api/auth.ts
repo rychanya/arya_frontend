@@ -30,7 +30,12 @@ function login(payload: Login): Promise<string> {
   });
 }
 
-function signin(payload: Login): Promise<string> {
+export interface SiginIn {
+  data?: "OK";
+  error?: string;
+}
+
+function signin(payload: Login): Promise<SiginIn> {
   return new Promise((resolve, reject) => {
     axios({
       url: "user",
@@ -38,8 +43,7 @@ function signin(payload: Login): Promise<string> {
       method: "POST",
     })
       .then((resp) => {
-        const token = resp.data.access_token;
-        resolve(token);
+        resolve(resp.data);
       })
       .catch((err) => {
         reject(parseError(err));
@@ -55,7 +59,7 @@ function get_current_user(): Promise<string> {
       headers: get_auth_header(),
     })
       .then((resp) => {
-        resolve(resp.data);
+        resolve(resp.data.data);
       })
       .catch((error) => {
         reject(parseError(error));
