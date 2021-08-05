@@ -38,7 +38,7 @@ export interface SiginIn {
 function signin(payload: Login): Promise<SiginIn> {
   return new Promise((resolve, reject) => {
     axios({
-      url: "user",
+      url: "user/",
       data: { username: payload.username, password: payload.password },
       method: "POST",
     })
@@ -54,7 +54,7 @@ function signin(payload: Login): Promise<SiginIn> {
 function get_current_user(): Promise<string> {
   return new Promise((resolve, reject) => {
     axios({
-      url: "user",
+      url: "user/",
       method: "GET",
       headers: get_auth_header(),
     })
