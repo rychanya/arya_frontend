@@ -29,7 +29,27 @@
             <transition-group
               enter-active-class="animate__animated animate__bounceIn"
               leave-active-class="animate__animated animate__bounceOut"
-            >
+              ><div v-if="q.toLowerCase() === 'котята'" class="card">
+                <div class="card-image">
+                  <figure class="image is-square">
+                    <img src="@/assets/kit.jpg" />
+                  </figure>
+                </div>
+                <div class="card-content">
+                  <div class="content">
+                    Photo by
+                    <a
+                      href="https://unsplash.com/@theluckyneko?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
+                      >The Lucky Neko</a
+                    >
+                    on
+                    <a
+                      href="https://unsplash.com/s/photos/kittens?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
+                      >Unsplash</a
+                    >
+                  </div>
+                </div>
+              </div>
               <qa-comp v-for="qa in qas" :key="qa._id" :qa="qa"></qa-comp>
             </transition-group>
           </div>
